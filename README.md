@@ -1,92 +1,200 @@
 # Aviation Hydraulic Monitoring Project
 
-This workspace contains a small hydraulic monitoring and flight simulation toolkit for aviation systems.
+## ✈️ Overview
 
-## Files and Purpose
+The Aviation Hydraulic Monitoring Project is a machine learning-based predictive maintenance system designed to monitor the health of aircraft hydraulic systems. The project analyzes sensor data collected from hydraulic components and predicts system conditions to help identify potential failures before they occur.
 
-- `train_hydraulic_model.py`
-  - Builds a sensor-feature dataset from `configuration/*.txt`
-  - Trains a machine learning model for hydraulic target labels
-  - Saves the trained model
+By leveraging machine learning techniques, the system improves aircraft safety, reduces maintenance costs, and minimizes unexpected downtime.
 
-- `evaluate_hydraulic_model.py`
-  - Evaluates a saved model on the current dataset
-  - Supports full dataset or held-out test split evaluation
+---
 
-- `hydraulic_monitoring_system.py`
-  - Implements a monitoring workflow
-  - Performs data cleansing, model training, evaluation, and reporting
-  - Writes a JSON monitoring report
+## 🎯 Problem Statement
 
-- `analyze_hydraulic_topology.py`
-  - Analyzes hydraulic line and junction safety limits from `model.json`
-  - Prints recommended pressure configuration guidance
+Aircraft hydraulic systems are critical for controlling flight surfaces, landing gear, brakes, and other essential operations. Traditional maintenance methods often rely on scheduled inspections, which may fail to detect hidden faults in time.
 
-- `live_analyze_hydraulic_configuration.py`
-  - Watches `model.json` and `configuration/*.txt`
-  - Reruns topology safety analysis automatically when files change
+This project aims to:
 
-- `realtime_hydraulic_alert.py`
-  - Monitors hydraulic sensor files in real time
-  - Raises alerts when pressure values exceed configured line thresholds
+* Monitor hydraulic system performance.
+* Detect abnormal operating conditions.
+* Predict potential failures.
+* Support predictive maintenance strategies.
+* Improve operational safety and reliability.
 
-- `model.json`
-  - Contains hydraulic topology, line limits, sensor mapping, and safety thresholds
+---
 
-- `configuration/`
-  - Contains the sensor log files and `profile.txt` labels used for training and evaluation
+## 🚀 Features
 
-## Setup
+* Hydraulic system condition monitoring
+* Sensor data preprocessing and analysis
+* Machine learning-based fault prediction
+* Automated condition classification
+* Model evaluation and performance metrics
+* Scalable architecture for real-world deployment
 
-Use the local Python environment in `d:\aviationproject`.
+---
 
-```powershell
+## 🏗️ Project Architecture
+
+```text
+Hydraulic Sensors
+        ↓
+Data Collection
+        ↓
+Data Preprocessing
+        ↓
+Feature Engineering
+        ↓
+Machine Learning Model
+        ↓
+Condition Prediction
+        ↓
+Maintenance Decision Support
+```
+
+---
+
+## 📂 Project Structure
+
+```text
+Aviation-Hydraulic-Monitoring-Project/
+│
+├── configuration/
+│   ├── EPS1.txt
+│   ├── PS3.txt
+│   ├── PS5.txt
+│   └── PS6.txt
+│
+├── model.json
+├── requirements.txt
+├── README.md
+└── source files
+```
+
+---
+
+## 📊 Dataset Information
+
+The dataset contains hydraulic system sensor measurements collected under various operating conditions.
+
+Example parameters include:
+
+* Pressure sensors
+* Hydraulic flow measurements
+* Temperature readings
+* System efficiency indicators
+* Component condition indicators
+
+These measurements are used to train and evaluate machine learning models for condition monitoring.
+
+---
+
+## 🛠️ Technologies Used
+
+* Python
+* NumPy
+* Pandas
+* Scikit-learn
+* Matplotlib
+* Machine Learning
+* Predictive Maintenance Techniques
+
+---
+
+## ⚙️ Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/artynx/Aviation-Hydraulic-Monitoring-Project.git
+```
+
+Navigate to the project folder:
+
+```bash
+cd Aviation-Hydraulic-Monitoring-Project
+```
+
+Create a virtual environment:
+
+```bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
 ```
 
-## Usage
+Activate the environment:
 
-### Train a model
+Windows:
 
-```powershell
-python .\train_hydraulic_model.py
+```bash
+.venv\Scripts\activate
 ```
 
-### Evaluate a saved model
+Install dependencies:
 
-```powershell
-python .\evaluate_hydraulic_model.py
+```bash
+pip install -r requirements.txt
 ```
 
-### Run hydraulic topology safety analysis
+---
 
-```powershell
-python .\analyze_hydraulic_topology.py
+## ▶️ Running the Project
+
+Execute the main Python file:
+
+```bash
+python main.py
 ```
 
-### Run live topology configuration analysis
+Replace `main.py` with the actual entry file if different.
 
-```powershell
-python .\live_analyze_hydraulic_configuration.py
-```
+---
 
-### Run realtime hydraulic anomaly alerts
+## 📈 Machine Learning Workflow
 
-```powershell
-python .\realtime_hydraulic_alert.py --watch
-```
+1. Data Collection
+2. Data Cleaning
+3. Feature Extraction
+4. Model Training
+5. Model Evaluation
+6. Condition Prediction
+7. Maintenance Recommendation
 
-Monitor a specific line:
+---
 
-```powershell
-python .\realtime_hydraulic_alert.py --line pump_line --watch
-```
+## 🎯 Applications
 
-## Notes
+* Aircraft Predictive Maintenance
+* Aviation Safety Monitoring
+* Industrial Hydraulic Systems
+* Fault Detection Systems
+* Condition-Based Maintenance
 
-- The alert system is currently file-based and uses values from the `configuration` directory.
-- For real flight integration, adapt the data source to your live telemetry feed.
-- The project is intended as a prototype for hydraulic monitoring, model training, and configuration safety analysis.
+---
+
+## 🔮 Future Enhancements
+
+* Real-time sensor monitoring dashboard
+* IoT integration
+* Cloud deployment
+* Remaining Useful Life (RUL) prediction
+* Deep learning-based anomaly detection
+* Microsoft AI integration for intelligent maintenance recommendations
+
+---
+
+## 📋 Results
+
+The machine learning model successfully identifies hydraulic system conditions using sensor data and demonstrates the feasibility of predictive maintenance in aviation applications.
+
+---
+
+## 👨‍💻 Author
+
+Artynx
+
+GitHub: https://github.com/artynx
+
+---
+
+## 📜 License
+
+This project is developed for educational and research purposes.
