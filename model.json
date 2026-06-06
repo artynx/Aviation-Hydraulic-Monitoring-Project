@@ -1,0 +1,114 @@
+{
+  "system": {
+    "name": "Hydraulic Safety Model",
+    "version": "1.0",
+    "units": {
+      "pressure": "bar",
+      "flow": "L/min",
+      "temperature": "C"
+    }
+  },
+  "components": {
+    "pump": {
+      "type": "variable_displacement",
+      "max_pressure": 210,
+      "max_flow": 60,
+      "emergency_stop_enabled": true
+    },
+    "relief_valve": {
+      "set_pressure": 200,
+      "tolerance": 5,
+      "fail_safe_open": true
+    },
+    "actuator": {
+      "type": "double_acting_cylinder",
+      "bore_diameter_mm": 50,
+      "rod_diameter_mm": 25,
+      "stroke_mm": 500,
+      "max_speed_mm_per_s": 200
+    },
+    "filters": {
+      "inlet_filter_micron": 10,
+      "return_filter_micron": 5,
+      "clog_indicator_enabled": true
+    }
+  },
+  "sensors": {
+    "pressure_sensors": [
+      { "location": "pump_outlet", "max_safe": 210 },
+      { "location": "actuator_port_A", "max_safe": 200 },
+      { "location": "actuator_port_B", "max_safe": 200 }
+    ],
+    "temperature_sensor": {
+      "location": "tank",
+      "max_safe": 60
+    }
+  },
+  "safety": {
+    "auto_shutdown": {
+      "trigger_conditions": [
+        { "sensor": "pressure", "above": 210 },
+        { "sensor": "temperature", "above": 60 }
+      ],
+      "action": "stop_pump"
+    },
+    "emergency_relief": true,
+    "log_events": true
+  },
+  "hydraulic_topology": {
+    "lines": [
+      {
+        "id": "pump_line",
+        "from": "pump_outlet",
+        "to": "junction_A",
+        "max_pressure": 210,
+        "max_flow": 60,
+        "description": "Main supply line from pump to distribution junction"
+      },
+      {
+        "id": "actuator_A_line",
+        "from": "junction_A",
+        "to": "actuator_port_A",
+        "max_pressure": 210,
+        "max_flow": 30,
+        "description": "Branch line to actuator port A"
+      },
+      {
+        "id": "actuator_B_line",
+        "from": "junction_A",
+        "to": "actuator_port_B",
+        "max_pressure": 210,
+        "max_flow": 30,
+        "description": "Branch line to actuator port B"
+      },
+      {
+        "id": "return_line",
+        "from": "actuator_return",
+        "to": "tank",
+        "max_pressure": 100,
+        "max_flow": 60,
+        "description": "Return line from actuator back to reservoir"
+      }
+    ],
+    "junctions": [
+      {
+        "id": "junction_A",
+        "type": "tee",
+        "connected_lines": ["pump_line", "actuator_A_line", "actuator_B_line"],
+        "safetest": {
+          "max_pressure": 200,
+          "max_flow": 55,
+          "notes": "Primary hydraulic distribution junction; best safety if pump pressure remains below 200 bar"
+        }
+      }
+    ],
+    "sensor_mapping": [
+      { "sensor": "PS1", "location": "pump_outlet", "line": "pump_line", "purpose": "measures supply pressure before junction_A" },
+      { "sensor": "PS2", "location": "actuator_port_A", "line": "actuator_A_line", "purpose": "measures pressure in branch A" },
+      { "sensor": "PS3", "location": "actuator_port_B", "line": "actuator_B_line", "purpose": "measures pressure in branch B" },
+      { "sensor": "FS1", "location": "pump_line", "line": "pump_line", "purpose": "measures flow from pump to junction" },
+      { "sensor": "FS2", "location": "actuator_A_line", "line": "actuator_A_line", "purpose": "measures flow into actuator branch A" },
+      { "sensor": "TS1", "location": "tank", "line": "return_line", "purpose": "measures reservoir temperature" }
+    ]
+  }
+}
